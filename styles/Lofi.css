@@ -1,0 +1,180 @@
+/* Lofi Theme Variables - Global Styles */
+:root {
+  /* Default dark theme variables */
+  --lofi-background: #18181b;
+  --lofi-card: #27272a;
+  --lofi-card-hover: #3f3f46;
+  --lofi-border: #3f3f46;
+  --lofi-text-primary: #e4e4e7;
+  --lofi-text-secondary: #a1a1aa;
+  --lofi-button-bg: #3f3f46;
+  --lofi-button-hover: #52525b;
+  --lofi-button-text: #e4e4e7;
+  --lofi-accent: #7e22ce;
+  --lofi-accent-hover: #9333ea;
+  --lofi-accent-text: #ffffff;
+  --lofi-card-radius: 0.75rem;
+  --lofi-button-radius: 0.5rem;
+  --lofi-card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+[data-theme='light'] {
+  --lofi-background: #f4f4f5;
+  --lofi-card: #e4e4e7;
+  --lofi-card-hover: #d4d4d8;
+  --lofi-border: #d4d4d8;
+  --lofi-text-primary: #18181b;
+  --lofi-text-secondary: #71717a;
+  --lofi-button-bg: #d4d4d8;
+  --lofi-button-hover: #a1a1aa;
+  --lofi-button-text: #27272a;
+  --lofi-accent: #7e22ce;
+  --lofi-accent-hover: #9333ea;
+  --lofi-accent-text: #ffffff;
+  --lofi-card-radius: 0.75rem;
+  --lofi-button-radius: 0.5rem;
+  --lofi-card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+[data-theme='vintage'] {
+  --lofi-background: #f8e3c4;
+  --lofi-card: #e6d0b0;
+  --lofi-card-hover: #d4be9c;
+  --lofi-border: #8b6d5c;
+  --lofi-text-primary: #4a3628;
+  --lofi-text-secondary: #6b5a4c;
+  --lofi-button-bg: #c17f59;
+  --lofi-button-hover: #d4956f;
+  --lofi-button-text: #f8e3c4;
+  --lofi-accent: #8b6d5c;
+  --lofi-accent-hover: #9d7e6d;
+  --lofi-accent-text: #ffffff;
+  --lofi-card-radius: 0.5rem;
+  --lofi-button-radius: 0.25rem;
+  --lofi-card-shadow: 0 4px 12px rgba(139, 109, 92, 0.2),
+    0 0 0 1px rgba(139, 109, 92, 0.15), inset 0 1px 0 0 rgba(248, 227, 196, 0.5),
+    2px 2px 0 rgba(139, 109, 92, 0.1);
+}
+
+[data-theme='metallic'] {
+  --lofi-background: #0f1215;
+  --lofi-card: #1a1f25;
+  --lofi-card-hover: #252b33;
+  --lofi-border: #3a424d;
+  --lofi-text-primary: #e2e8f0;
+  --lofi-text-secondary: #94a3b8;
+  --lofi-button-bg: #2d343d;
+  --lofi-button-hover: #3a424d;
+  --lofi-button-text: #e2e8f0;
+  --lofi-accent: #718096;
+  --lofi-accent-hover: #8b97aa;
+  --lofi-accent-text: #ffffff;
+  --lofi-card-radius: 0.25rem;
+  --lofi-button-radius: 0.125rem;
+  --lofi-card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='midnight'] {
+  --lofi-background: #0a0c10;
+  --lofi-card: #141820;
+  --lofi-card-hover: #1c2230;
+  --lofi-border: #252d3d;
+  --lofi-text-primary: #e2e8f0;
+  --lofi-text-secondary: #94a3b8;
+  --lofi-button-bg: #252d3d;
+  --lofi-button-hover: #2f3b4f;
+  --lofi-button-text: #e2e8f0;
+  --lofi-accent: #3b82f6;
+  --lofi-accent-hover: #60a5fa;
+  --lofi-accent-text: #ffffff;
+  --lofi-card-radius: 0.75rem;
+  --lofi-button-radius: 0.5rem;
+  --lofi-card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.02);
+}
+
+[data-theme='cyberpunk'] {
+  --lofi-background: #0f0326;
+  --lofi-card: #1a0940;
+  --lofi-card-hover: #2a0c66;
+  --lofi-border: #ff2a6d;
+  --lofi-text-primary: #05ffa1;
+  --lofi-text-secondary: #14acc2;
+  --lofi-button-bg: #2a0c66;
+  --lofi-button-hover: #3d1a75;
+  --lofi-button-text: #05ffa1;
+  --lofi-accent: #ff2a6d;
+  --lofi-accent-hover: #ff4081;
+  --lofi-accent-text: #000000;
+  --lofi-card-radius: 0.25rem;
+  --lofi-button-radius: 0rem;
+  --lofi-card-shadow: 0 0 10px rgba(255, 42, 109, 0.3),
+    0 0 20px rgba(5, 255, 161, 0.1), inset 0 0 2px rgba(255, 42, 109, 0.5);
+}
+
+[data-theme='forest'] {
+  --lofi-background: #1a2f1c;
+  --lofi-card: #2a412c;
+  --lofi-card-hover: #35513e;
+  --lofi-border: #4a6b4d;
+  --lofi-text-primary: #d4e5d4;
+  --lofi-text-secondary: #95ab96;
+  --lofi-button-bg: #3c5a3e;
+  --lofi-button-hover: #4a714d;
+  --lofi-button-text: #d4e5d4;
+  --lofi-accent: #7fb069;
+  --lofi-accent-hover: #96c37c;
+  --lofi-accent-text: #000000;
+  --lofi-card-radius: 1.5rem;
+  --lofi-button-radius: 1rem;
+  --lofi-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(126, 176, 105, 0.1),
+    inset 0 1px 0 0 rgba(212, 229, 212, 0.05);
+}
+
+[data-theme='ocean'] {
+  --lofi-background: #0a192f;
+  --lofi-card: #112240;
+  --lofi-card-hover: #1a365d;
+  --lofi-border: #234876;
+  --lofi-text-primary: #e6f1ff;
+  --lofi-text-secondary: #8892b0;
+  --lofi-button-bg: #1a365d;
+  --lofi-button-hover: #234876;
+  --lofi-button-text: #e6f1ff;
+  --lofi-accent: #64ffda;
+  --lofi-accent-hover: #88fff0;
+  --lofi-accent-text: #000000;
+  --lofi-card-radius: 0.5rem;
+  --lofi-button-radius: 0.25rem;
+  --lofi-card-shadow: 0 4px 15px rgba(100, 255, 218, 0.07),
+    0 0 0 1px rgba(100, 255, 218, 0.1),
+    inset 0 1px 0 0 rgba(230, 241, 255, 0.05);
+}
+
+[data-theme='sunset'] {
+  --lofi-background: #2d1b2d;
+  --lofi-card: #3d2438;
+  --lofi-card-hover: #4d2d47;
+  --lofi-border: #ff6b6b;
+  --lofi-text-primary: #ffd6d6;
+  --lofi-text-secondary: #c4a5a5;
+  --lofi-button-bg: #ff6b6b;
+  --lofi-button-hover: #ff8787;
+  --lofi-button-text: #2d1b2d;
+  --lofi-accent: #ffc145;
+  --lofi-accent-hover: #ffd175;
+  --lofi-accent-text: #000000;
+  --lofi-card-radius: 1rem;
+  --lofi-button-radius: 0.75rem;
+  --lofi-card-shadow: 0 4px 12px rgba(255, 107, 107, 0.1),
+    0 0 0 1px rgba(255, 107, 107, 0.1),
+    inset 0 1px 0 0 rgba(255, 214, 214, 0.05);
+}
+
+.theme-container {
+  display: contents;
+}

@@ -1,6 +1,20 @@
 import React from 'react'
-import { X, RotateCcw, ChevronDown } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 import { themes } from '@/lib/lofi-themes'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface SettingsModalProps {
   isOpen: boolean
@@ -33,24 +47,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-[var(--lofi-card-radius)] bg-[var(--lofi-card)] p-6 shadow-[var(--lofi-card-shadow)]">
-        <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-[var(--lofi-text-primary)]">
-            Settings
-          </h3>
-          <button
-            onClick={onClose}
-            className="rounded-[var(--lofi-button-radius)] p-2 text-[var(--lofi-text-secondary)] hover:bg-[var(--lofi-card-hover)]"
-          >
-            <X size={20} />
-          </button>
-        </div>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Settings</DialogTitle>
+        </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-6 py-4">
           <div className="space-y-3">
             <label
               htmlFor="theme-select"
@@ -58,40 +62,32 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             >
               Theme
             </label>
-            <div className="relative">
-              <select
-                id="theme-select"
-                value={currentTheme}
-                onChange={(e) => setCurrentTheme(e.target.value)}
-                className="w-full appearance-none rounded-[var(--lofi-button-radius)] border border-[var(--lofi-border)] bg-[var(--lofi-card-hover)] px-3 py-2 text-[var(--lofi-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--lofi-accent)]"
-              >
+            <Select value={currentTheme} onValueChange={setCurrentTheme}>
+              <SelectTrigger id="theme-select">
+                <SelectValue placeholder="Select a theme" />
+              </SelectTrigger>
+              <SelectContent>
                 {Object.values(themes).map((theme) => (
-                  <option key={theme.id} value={theme.id}>
+                  <SelectItem key={theme.id} value={theme.id}>
                     {theme.name}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                <ChevronDown
-                  size={16}
-                  className="text-[var(--lofi-text-primary)]"
-                />
-              </div>
-            </div>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="pt-4">
-            <button
+            <Button
               onClick={handleResetDefaults}
-              className="flex w-full items-center justify-center space-x-2 rounded-[var(--lofi-button-radius)] bg-[var(--lofi-button-bg)] py-2 text-[var(--lofi-button-text)] shadow-[var(--lofi-card-shadow)] transition-colors hover:bg-[var(--lofi-button-hover)]"
+              className="flex w-full items-center justify-center"
             >
-              <RotateCcw size={16} />
+              <RotateCcw />
               <span>Restore Defaults</span>
-            </button>
+            </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 

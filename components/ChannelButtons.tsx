@@ -1,32 +1,29 @@
 import React from 'react'
 import { Channel } from '@/types/lofi'
+import { Button } from '@/components/ui/button'
 
 interface ChannelButtonsProps {
   channels: Channel[]
   currentChannel: number
   setCurrentChannel: (index: number) => void
-  currentTheme: string
 }
 
 const ChannelButtons: React.FC<ChannelButtonsProps> = ({
   channels,
   currentChannel,
   setCurrentChannel,
-  currentTheme,
 }) => (
   <div className="flex space-x-2 overflow-x-auto pb-2">
     {channels.map((channel, idx) => (
-      <button
+      <Button
         key={idx}
         onClick={() => setCurrentChannel(idx)}
-        className={`flex-shrink-0 rounded-[var(--lofi-button-radius)] px-3 py-1 font-mono text-xs shadow-[var(--lofi-card-shadow)] transition-colors ${
-          currentChannel === idx
-            ? 'bg-[var(--lofi-accent)] text-white hover:bg-[var(--lofi-accent-hover)]'
-            : 'bg-[var(--lofi-button-bg)] text-[var(--lofi-button-text)] hover:bg-[var(--lofi-button-hover)]'
-        }`}
+        variant={currentChannel === idx ? 'accent' : 'default'}
+        size="sm"
+        className="flex-shrink-0 font-mono h-7"
       >
         CH{idx + 1} {channel.isCustom && '★'}
-      </button>
+      </Button>
     ))}
   </div>
 )

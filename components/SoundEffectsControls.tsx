@@ -3,10 +3,20 @@ import { Plus, Music, X } from 'lucide-react'
 import { soundEffects } from '@/lib/lofi_data'
 import { SoundEffect, CustomSoundEffect } from '@/types/lofi'
 import dynamic from 'next/dynamic'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Slider } from '@/components/ui/slider'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
-}) as any
+}) as any // eslint-disable-line @typescript-eslint/no-explicit-any
 
 interface SoundEffectsControlsProps {
   activeEffects: Set<string>
@@ -15,7 +25,6 @@ interface SoundEffectsControlsProps {
   setEffectsVolume: (vol: number) => void
   effectVolumes: { [key: string]: number }
   setEffectVolumes: (volumes: { [key: string]: number }) => void
-  currentTheme: string
   customEffects: CustomSoundEffect[]
   setCustomEffects: (effects: CustomSoundEffect[]) => void
   loadingEffects: Set<string>
@@ -28,7 +37,6 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
   setEffectsVolume,
   effectVolumes,
   setEffectVolumes,
-  currentTheme,
   customEffects,
   setCustomEffects,
   loadingEffects,
@@ -41,7 +49,7 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
   })
   const [urlError, setUrlError] = useState('')
 
-  const allEffects = [
+  const allEffects = React.useMemo(() => [
     ...soundEffects.map((effect) => ({
       ...effect,
     })),
@@ -50,7 +58,7 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
       icon: Music,
       isCustom: true,
     })),
-  ]
+  ], [customEffects])
 
   const validateYoutubeUrl = (url: string): boolean => {
     try {
@@ -132,17 +140,15 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
           </div>
         )}
 
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <button
+            <Button
               onClick={() => toggleEffect(effect.id)}
               disabled={isLoading}
-              className={`rounded-[var(--lofi-button-radius)] p-1.5 shadow-lg transition-all hover:translate-y-[-1px] hover:shadow-xl focus:outline-none active:translate-y-[1px] ${
-                isLoading
-                  ? 'opacity-50'
-                  : isActive
-                  ? 'bg-[var(--lofi-accent)] text-white shadow-[var(--lofi-accent)]/20'
-                  : 'bg-[var(--lofi-button-bg)] text-[var(--lofi-button-text)] hover:bg-[var(--lofi-button-hover)]'
+              size="icon"
+              variant={isActive ? 'accent' : 'default'}
+              className={`h-8 w-8 shadow-lg transition-all hover:translate-y-[-1px] hover:shadow-xl active:translate-y-[1px] ${
+                isLoading ? 'opacity-50' : ''
               }`}
             >
               {isLoading ? (
@@ -150,7 +156,7 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
               ) : (
                 <effect.icon size={16} />
               )}
-            </button>
+            </Button>
             <span className="font-mono text-xs text-[var(--lofi-text-primary)]">
               {effect.name}
             </span>
@@ -160,34 +166,32 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
               {Math.round(effectVolumes[effect.id] * 100)}%
             </span>
             {effect.isCustom && (
-              <button
+              <Button
                 onClick={() => handleDeleteEffect(effect.id)}
-                className="rounded-md bg-[var(--lofi-button-bg)] p-1 text-[var(--lofi-button-text)] shadow-lg transition-all hover:translate-y-[-1px] hover:bg-[var(--lofi-button-hover)] hover:shadow-xl focus:outline-none active:translate-y-[1px]"
+                variant="default"
+                size="icon"
+                className="h-7 w-7 shadow-lg transition-all hover:translate-y-[-1px] hover:shadow-xl active:translate-y-[1px]"
               >
                 <X size={14} />
-              </button>
+              </Button>
             )}
           </div>
         </div>
-        <input
-          type="range"
+        <Slider
           min={0}
           max={1}
           step={0.01}
-          value={effectVolumes[effect.id]}
-          onChange={(e) => {
+          value={[effectVolumes[effect.id]]}
+          onValueChange={(vals) => {
             if (!isActive && !isLoading) {
               toggleEffect(effect.id)
             }
             setEffectVolumes({
               ...effectVolumes,
-              [effect.id]: parseFloat(e.target.value),
+              [effect.id]: vals[0],
             })
           }}
-          className="w-full cursor-pointer focus:outline-none [&::-moz-range-thumb]:bg-[var(--lofi-accent)] [&::-webkit-slider-thumb]:bg-[var(--lofi-accent)]"
-          style={{
-            accentColor: 'var(--lofi-accent)',
-          }}
+          className="w-full"
         />
       </div>
     )
@@ -208,35 +212,32 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
     if (hasChanges) {
       setEffectVolumes(newVolumes)
     }
-  }, [allEffects, effectVolumes])
+  }, [allEffects, effectVolumes, setEffectVolumes])
 
   return (
     <div className="space-y-4">
       <div className="mb-4 flex flex-row justify-between gap-4 sm:items-center">
-        <h3 className="mt-2 font-mono text-sm text-[var(--lofi-text-primary)]">
+        <h3 className="font-mono text-sm text-[var(--lofi-text-primary)]">
           Effects
         </h3>
         <div className="flex items-center space-x-2">
-          <button
+          <Button
             onClick={() => setIsAddingEffect(true)}
-            className="rounded-full bg-[var(--lofi-button-bg)] p-2 text-[var(--lofi-button-text)] hover:bg-[var(--lofi-button-hover)] focus:outline-none"
+            size="icon"
+            className="rounded-full"
           >
             <Plus size={16} />
-          </button>
+          </Button>
           <span className="hidden font-mono text-xs text-[var(--lofi-text-secondary)] sm:inline">
             Master Volume
           </span>
-          <input
-            type="range"
+          <Slider
             min={0}
             max={1}
             step={0.01}
-            value={effectsVolume}
-            onChange={(e) => setEffectsVolume(parseFloat(e.target.value))}
-            className="w-32 focus:outline-none sm:w-20 [&::-moz-range-thumb]:bg-[var(--lofi-accent)] [&::-webkit-slider-thumb]:bg-[var(--lofi-accent)]"
-            style={{
-              accentColor: 'var(--lofi-accent)',
-            }}
+            value={[effectsVolume]}
+            onValueChange={(vals) => setEffectsVolume(vals[0])}
+            className="w-20 sm:w-20"
           />
         </div>
       </div>
@@ -245,23 +246,24 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
         {allEffects.map((effect) => renderSoundEffect(effect))}
       </div>
 
-      {isAddingEffect && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md space-y-3 rounded-[var(--lofi-card-radius)] bg-[var(--lofi-card)] p-6 shadow-[var(--lofi-card-shadow)]">
-            <h3 className="text-lg font-bold text-[var(--lofi-text-primary)]">
-              Add Sound Effect
-            </h3>
-            <input
-              type="text"
+      <Dialog 
+        open={isAddingEffect} 
+        onOpenChange={(open) => !open && setIsAddingEffect(false)}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Sound Effect</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-4">
+            <Input
               placeholder="Effect Name"
               value={newEffect.name}
               onChange={(e) =>
                 setNewEffect({ ...newEffect, name: e.target.value })
               }
-              className="w-full rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)] focus:outline-none"
             />
             <div className="space-y-1">
-              <input
+              <Input
                 type="url"
                 placeholder="YouTube URL"
                 value={newEffect.file}
@@ -269,30 +271,31 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
                   setNewEffect({ ...newEffect, file: e.target.value })
                   setUrlError('')
                 }}
-                className={`w-full rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)] focus:outline-none ${
-                  urlError ? 'border border-red-500' : ''
-                }`}
+                className={urlError ? 'border-red-500' : ''}
               />
               {urlError && <p className="text-xs text-red-500">{urlError}</p>}
             </div>
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setIsAddingEffect(false)}
-                className="rounded-[var(--lofi-button-radius)] px-3 py-1 text-xs text-[var(--lofi-text-secondary)] hover:text-[var(--lofi-text-primary)] focus:outline-none"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddEffect}
-                className="flex items-center space-x-2 rounded-[var(--lofi-button-radius)] bg-[var(--lofi-accent)] px-3 py-1 text-xs text-white shadow-[var(--lofi-card-shadow)] hover:bg-[var(--lofi-accent-hover)]"
-              >
-                <Plus size={14} />
-                <span>Add Effect</span>
-              </button>
-            </div>
           </div>
-        </div>
-      )}
+          <DialogFooter className="sm:justify-end">
+            <Button
+              variant="ghost"
+              onClick={() => setIsAddingEffect(false)}
+              size="sm"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddEffect}
+              variant="accent"
+              size="sm"
+              className="flex items-center"
+            >
+              <Plus />
+              <span>Add Effect</span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
