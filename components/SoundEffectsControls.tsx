@@ -16,7 +16,7 @@ import {
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
-}) as any
+}) as any // eslint-disable-line @typescript-eslint/no-explicit-any
 
 interface SoundEffectsControlsProps {
   activeEffects: Set<string>
@@ -25,7 +25,6 @@ interface SoundEffectsControlsProps {
   setEffectsVolume: (vol: number) => void
   effectVolumes: { [key: string]: number }
   setEffectVolumes: (volumes: { [key: string]: number }) => void
-  currentTheme: string
   customEffects: CustomSoundEffect[]
   setCustomEffects: (effects: CustomSoundEffect[]) => void
   loadingEffects: Set<string>
@@ -38,7 +37,6 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
   setEffectsVolume,
   effectVolumes,
   setEffectVolumes,
-  currentTheme,
   customEffects,
   setCustomEffects,
   loadingEffects,
@@ -51,7 +49,7 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
   })
   const [urlError, setUrlError] = useState('')
 
-  const allEffects = [
+  const allEffects = React.useMemo(() => [
     ...soundEffects.map((effect) => ({
       ...effect,
     })),
@@ -60,7 +58,7 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
       icon: Music,
       isCustom: true,
     })),
-  ]
+  ], [customEffects])
 
   const validateYoutubeUrl = (url: string): boolean => {
     try {
@@ -214,7 +212,7 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
     if (hasChanges) {
       setEffectVolumes(newVolumes)
     }
-  }, [allEffects, effectVolumes])
+  }, [allEffects, effectVolumes, setEffectVolumes])
 
   return (
     <div className="space-y-4">

@@ -6,14 +6,12 @@ interface ChannelButtonsProps {
   channels: Channel[]
   currentChannel: number
   setCurrentChannel: (index: number) => void
-  currentTheme: string
 }
 
 const ChannelButtons: React.FC<ChannelButtonsProps> = ({
   channels,
   currentChannel,
   setCurrentChannel,
-  currentTheme,
 }) => (
   <div className="flex space-x-2 overflow-x-auto pb-2">
     {channels.map((channel, idx) => (

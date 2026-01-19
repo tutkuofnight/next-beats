@@ -29,11 +29,7 @@ const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
 })
 
-// Type Definitions
-type AudioCache = {
-  audio: HTMLAudioElement
-  loaded: boolean
-}
+
 
 const StaticEffect = () => {
   const [staticPoints, setStaticPoints] = useState<
@@ -90,7 +86,7 @@ const EnhancedLofiPlayer = () => {
     CustomSoundEffect[]
   >('customSoundEffects', [])
 
-  const playerRef = useRef<any>(null)
+  const playerRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set())
   const [isAddingChannel, setIsAddingChannel] = useState(false)
   const [newChannel, setNewChannel] = useState<Channel>({
@@ -143,10 +139,7 @@ const EnhancedLofiPlayer = () => {
     setPlayed(state.played)
   }
 
-  const handleChannelChange = (index: number) => {
-    setCurrentChannel(index)
-    setPlayed(0)
-  }
+
 
   const handleVolumeChange = (newVolume: number) => {
     setVolume(newVolume)
@@ -160,26 +153,7 @@ const EnhancedLofiPlayer = () => {
     setCurrentTheme(theme)
   }
 
-  const handleAddChannel = () => {
-    if (!newChannel.name || !newChannel.url) {
-      alert('Channel Name and URL are required.')
-      return
-    }
 
-    const updatedChannels: Channel[] = [
-      ...customChannels,
-      { ...newChannel, isCustom: true },
-    ]
-    setCustomChannels(updatedChannels)
-    setIsAddingChannel(false)
-    setNewChannel({
-      name: '',
-      url: '',
-      description: '',
-      creator: '',
-      isCustom: true,
-    })
-  }
 
   const handleDeleteChannel = (channelIndex: number) => {
     const channelToDelete = allChannels[channelIndex]
@@ -341,7 +315,6 @@ const EnhancedLofiPlayer = () => {
             <div className="absolute inset-0">
               {mounted && <StaticEffect />}
               {mounted && (
-                // @ts-ignore
                 <ReactPlayer
                   ref={playerRef}
                   url={allChannels[currentChannel]?.url || ''}
@@ -428,7 +401,6 @@ const EnhancedLofiPlayer = () => {
                   channels={allChannels}
                   currentChannel={currentChannel}
                   setCurrentChannel={setCurrentChannel}
-                  currentTheme={currentTheme}
                 />
               </div>
             )}
@@ -456,7 +428,6 @@ const EnhancedLofiPlayer = () => {
                       newChannel={newChannel}
                       setNewChannel={setNewChannel}
                       saveChannel={handleSaveChannel}
-                      currentTheme={currentTheme}
                       currentChannel={currentChannel}
                       handleEditChannel={handleEditChannel}
                       setShowDeleteConfirm={setShowDeleteConfirm}
@@ -488,7 +459,6 @@ const EnhancedLofiPlayer = () => {
                 setEffectsVolume={handleEffectsVolumeChange}
                 effectVolumes={effectVolumes}
                 setEffectVolumes={setEffectVolumes}
-                currentTheme={currentTheme}
                 customEffects={customEffects}
                 setCustomEffects={setCustomEffects}
                 loadingEffects={new Set()}
@@ -584,7 +554,7 @@ const EnhancedLofiPlayer = () => {
                   "Cannot delete the last remaining channel."
                 ) : (
                   <>
-                    Are you sure you want to delete "{allChannels[showDeleteConfirm ?? 0]?.name}"?
+                    Are you sure you want to delete &quot;{allChannels[showDeleteConfirm ?? 0]?.name}&quot;?
                     {showDeleteConfirm !== null && showDeleteConfirm < DEFAULT_CHANNELS.length - hiddenDefaultChannels.length &&
                       ' This will hide the default channel.'}
                   </>

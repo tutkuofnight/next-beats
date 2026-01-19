@@ -17,7 +17,6 @@ interface ChannelManagementProps {
   newChannel: Channel
   setNewChannel: (channel: Channel) => void
   saveChannel: () => void
-  currentTheme: string
   currentChannel: number
   handleEditChannel: (index: number) => void
   setShowDeleteConfirm: (channelIndex: number) => void
@@ -29,7 +28,6 @@ const ChannelManagement: React.FC<ChannelManagementProps> = ({
   newChannel,
   setNewChannel,
   saveChannel,
-  currentTheme,
   currentChannel,
   handleEditChannel,
   setShowDeleteConfirm,
