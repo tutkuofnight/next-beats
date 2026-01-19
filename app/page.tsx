@@ -12,9 +12,18 @@ import SoundEffectsControls from '@/components/SoundEffectsControls'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Channel, CustomSoundEffect } from '@/types/lofi'
 import SettingsModal from '@/components/SettingsModal'
-import styles from '@/styles/Lofi.module.css'
+import { cn } from '@/lib/utils'
+import '@/styles/Lofi.css'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog'
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
@@ -112,15 +121,10 @@ const EnhancedLofiPlayer = () => {
   }, [isBrowser])
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Get theme from localStorage directly to ensure immediate application
-      const savedTheme = localStorage.getItem('lofi-theme') || 'dark'
-      document.documentElement.dataset.theme = savedTheme
-      if (currentTheme !== savedTheme) {
-        setCurrentTheme(savedTheme)
-      }
+    if (typeof window !== 'undefined' && mounted) {
+      document.documentElement.dataset.theme = currentTheme
     }
-  }, [])
+  }, [currentTheme, mounted])
 
   const toggleEffect = (effectId: string) => {
     setActiveEffects((prev) => {
@@ -318,7 +322,7 @@ const EnhancedLofiPlayer = () => {
 
   return (
     <div
-      className={styles['theme-container']}
+      className={cn("min-h-screen transition-colors duration-500", "theme-container text-[var(--lofi-text-primary)] bg-[var(--lofi-background)]")}
       data-theme={mounted ? currentTheme : 'dark'}
     >
       <a
@@ -494,124 +498,119 @@ const EnhancedLofiPlayer = () => {
         </div>
 
         {/* Channel Edit Modal */}
-        {isEditingChannel !== null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div
-              className={`w-full max-w-md rounded-lg bg-[var(--lofi-card)] p-6`}
-            >
-              <h3
-                className={`mb-4 text-lg font-bold text-[var(--lofi-text-primary)]`}
-              >
-                Edit Channel {isEditingChannel + 1}
-              </h3>
-              <div className="space-y-3">
-                <Input
-                  placeholder="Channel Name"
-                  value={editingChannel.name}
-                  onChange={(e) =>
-                    setEditingChannel({
-                      ...editingChannel,
-                      name: e.target.value,
-                    })
-                  }
-                />
-                <Input
-                  placeholder="YouTube URL"
-                  value={editingChannel.url}
-                  onChange={(e) =>
-                    setEditingChannel({
-                      ...editingChannel,
-                      url: e.target.value,
-                    })
-                  }
-                />
-                <Input
-                  placeholder="Description"
-                  value={editingChannel.description}
-                  onChange={(e) =>
-                    setEditingChannel({
-                      ...editingChannel,
-                      description: e.target.value,
-                    })
-                  }
-                />
-                <Input
-                  placeholder="Creator"
-                  value={editingChannel.creator}
-                  onChange={(e) =>
-                    setEditingChannel({
-                      ...editingChannel,
-                      creator: e.target.value,
-                    })
-                  }
-                />
-                <div className="flex justify-end space-x-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsEditingChannel(null)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleSaveEditedChannel}
-                    size="sm"
-                    className="flex items-center space-x-2"
-                  >
-                    <Save size={14} />
-                    <span>Save Changes</span>
-                  </Button>
-                </div>
-              </div>
+        <Dialog 
+          open={isEditingChannel !== null} 
+          onOpenChange={(open) => !open && setIsEditingChannel(null)}
+        >
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>
+                Edit Channel {(isEditingChannel ?? 0) + 1}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-4">
+              <Input
+                placeholder="Channel Name"
+                value={editingChannel.name}
+                onChange={(e) =>
+                  setEditingChannel({
+                    ...editingChannel,
+                    name: e.target.value,
+                  })
+                }
+              />
+              <Input
+                placeholder="YouTube URL"
+                value={editingChannel.url}
+                onChange={(e) =>
+                  setEditingChannel({
+                    ...editingChannel,
+                    url: e.target.value,
+                  })
+                }
+              />
+              <Input
+                placeholder="Description"
+                value={editingChannel.description}
+                onChange={(e) =>
+                  setEditingChannel({
+                    ...editingChannel,
+                    description: e.target.value,
+                  })
+                }
+              />
+              <Input
+                placeholder="Creator"
+                value={editingChannel.creator}
+                onChange={(e) =>
+                  setEditingChannel({
+                    ...editingChannel,
+                    creator: e.target.value,
+                  })
+                }
+              />
             </div>
-          </div>
-        )}
+            <DialogFooter className="sm:justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditingChannel(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSaveEditedChannel}
+                size="sm"
+                variant="accent"
+                className="flex items-center space-x-2"
+              >
+                <Save />
+                <span>Save Changes</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Delete Confirmation Modal */}
-        {showDeleteConfirm !== null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div
-              className={`w-full max-w-sm rounded-lg bg-[var(--lofi-card)] p-6`}
-            >
-              <h3
-                className={`mb-4 text-lg font-bold text-[var(--lofi-text-primary)]`}
+        <Dialog 
+          open={showDeleteConfirm !== null} 
+          onOpenChange={(open) => !open && setShowDeleteConfirm(null)}
+        >
+          <DialogContent className="sm:max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Delete Channel</DialogTitle>
+              <DialogDescription>
+                {allChannels.length <= 1 ? (
+                  "Cannot delete the last remaining channel."
+                ) : (
+                  <>
+                    Are you sure you want to delete "{allChannels[showDeleteConfirm ?? 0]?.name}"?
+                    {showDeleteConfirm !== null && showDeleteConfirm < DEFAULT_CHANNELS.length - hiddenDefaultChannels.length &&
+                      ' This will hide the default channel.'}
+                  </>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="sm:justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowDeleteConfirm(null)}
               >
-                Delete Channel
-              </h3>
-              {allChannels.length <= 1 ? (
-                <p className="mb-4 text-sm text-[var(--lofi-text-secondary)]">
-                  Cannot delete the last remaining channel.
-                </p>
-              ) : (
-                <p className={`mb-4 text-sm text-[var(--lofi-text-secondary)]`}>
-                  Are you sure you want to delete "
-                  {allChannels[showDeleteConfirm].name}"?
-                  {showDeleteConfirm <
-                    DEFAULT_CHANNELS.length - hiddenDefaultChannels.length &&
-                    ' This will hide the default channel.'}
-                </p>
-              )}
-              <div className="flex justify-end space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowDeleteConfirm(null)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => handleDeleteChannel(showDeleteConfirm)}
-                  disabled={allChannels.length <= 1}
-                  size="sm"
-                  className="flex items-center space-x-2"
-                >
-                  <X size={14} />
-                  <span>Delete Channel</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
+                Cancel
+              </Button>
+              <Button
+                onClick={() => handleDeleteChannel(showDeleteConfirm!)}
+                disabled={allChannels.length <= 1}
+                size="sm"
+                className="flex items-center space-x-2"
+              >
+                <X size={14} />
+                <span>Delete Channel</span>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <SettingsModal
           isOpen={isSettingsOpen}

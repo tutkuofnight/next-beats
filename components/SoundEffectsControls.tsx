@@ -6,6 +6,13 @@ import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
@@ -241,12 +248,15 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
         {allEffects.map((effect) => renderSoundEffect(effect))}
       </div>
 
-      {isAddingEffect && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md space-y-3 rounded-[var(--lofi-card-radius)] bg-[var(--lofi-card)] p-6 shadow-[var(--lofi-card-shadow)]">
-            <h3 className="text-lg font-bold text-[var(--lofi-text-primary)]">
-              Add Sound Effect
-            </h3>
+      <Dialog 
+        open={isAddingEffect} 
+        onOpenChange={(open) => !open && setIsAddingEffect(false)}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Sound Effect</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-4">
             <Input
               placeholder="Effect Name"
               value={newEffect.name}
@@ -267,27 +277,27 @@ const SoundEffectsControls: React.FC<SoundEffectsControlsProps> = ({
               />
               {urlError && <p className="text-xs text-red-500">{urlError}</p>}
             </div>
-            <div className="flex justify-end space-x-2">
-              <Button
-                variant="ghost"
-                onClick={() => setIsAddingEffect(false)}
-                size="sm"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleAddEffect}
-                variant="accent"
-                size="sm"
-                className="flex items-center space-x-2"
-              >
-                <Plus size={14} />
-                <span>Add Effect</span>
-              </Button>
-            </div>
           </div>
-        </div>
-      )}
+          <DialogFooter className="sm:justify-end">
+            <Button
+              variant="ghost"
+              onClick={() => setIsAddingEffect(false)}
+              size="sm"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddEffect}
+              variant="accent"
+              size="sm"
+              className="flex items-center"
+            >
+              <Plus />
+              <span>Add Effect</span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

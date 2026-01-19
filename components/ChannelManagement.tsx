@@ -3,6 +3,13 @@ import { Edit2, X, Plus, Save } from 'lucide-react'
 import { Channel } from '@/types/lofi'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
 
 interface ChannelManagementProps {
   isAddingChannel: boolean
@@ -27,43 +34,38 @@ const ChannelManagement: React.FC<ChannelManagementProps> = ({
   handleEditChannel,
   setShowDeleteConfirm,
 }) => (
-  <div
-    className={
-      isAddingChannel
-        ? 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4'
-        : 'flex items-center space-x-2'
-    }
-  >
-    {!isAddingChannel ? (
-      <div className="flex items-center space-x-2">
-        <Button
-          onClick={() => handleEditChannel(currentChannel)}
-          size="icon"
-          variant="default"
-        >
-          <Edit2 size={16} />
-        </Button>
-        <Button
-          onClick={() => setShowDeleteConfirm(currentChannel)}
-          size="icon"
-          variant="default"
-        >
-          <X size={16} />
-        </Button>
-        <Button
-          onClick={() => setIsAddingChannel(true)}
-          size="icon"
-          variant="default"
-        >
-          <Plus size={16} />
-        </Button>
-      </div>
-    ) : (
-      <div className="w-full max-w-md space-y-3 rounded-[var(--lofi-card-radius)] bg-[var(--lofi-card)] p-6 shadow-[var(--lofi-card-shadow)]">
-        <h3 className="text-lg font-bold text-[var(--lofi-text-primary)]">
-          Add New Channel
-        </h3>
-        <div className="grid grid-cols-1 gap-3">
+  <div className="flex items-center space-x-2">
+    <Button
+      onClick={() => handleEditChannel(currentChannel)}
+      size="icon"
+      variant="default"
+    >
+      <Edit2 size={16} />
+    </Button>
+    <Button
+      onClick={() => setShowDeleteConfirm(currentChannel)}
+      size="icon"
+      variant="default"
+    >
+      <X size={16} />
+    </Button>
+    <Button
+      onClick={() => setIsAddingChannel(true)}
+      size="icon"
+      variant="default"
+    >
+      <Plus size={16} />
+    </Button>
+
+    <Dialog 
+      open={isAddingChannel} 
+      onOpenChange={(open) => !open && setIsAddingChannel(false)}
+    >
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add New Channel</DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-1 gap-3 py-4">
           <Input
             placeholder="Channel Name"
             value={newChannel.name}
@@ -93,7 +95,7 @@ const ChannelManagement: React.FC<ChannelManagementProps> = ({
             }
           />
         </div>
-        <div className="flex justify-end space-x-2">
+        <DialogFooter className="sm:justify-end">
           <Button
             variant="ghost"
             onClick={() => setIsAddingChannel(false)}
@@ -105,13 +107,14 @@ const ChannelManagement: React.FC<ChannelManagementProps> = ({
             onClick={saveChannel}
             variant="accent"
             size="sm"
+            className="flex"
           >
-            <Save size={14} />
+            <Save />
             <span>Save Channel</span>
           </Button>
-        </div>
-      </div>
-    )}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 )
 
