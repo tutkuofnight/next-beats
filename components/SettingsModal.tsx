@@ -1,6 +1,7 @@
 import React from 'react'
 import { X, RotateCcw, ChevronDown } from 'lucide-react'
 import { themes } from '@/lib/lofi-themes'
+import { Button } from '@/components/ui/button'
 
 interface SettingsModalProps {
   isOpen: boolean
@@ -42,12 +43,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <h3 className="text-lg font-bold text-[var(--lofi-text-primary)]">
             Settings
           </h3>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="rounded-[var(--lofi-button-radius)] p-2 text-[var(--lofi-text-secondary)] hover:bg-[var(--lofi-card-hover)]"
+            className="text-[var(--lofi-text-secondary)]"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         <div className="space-y-6">
@@ -81,13 +84,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           <div className="pt-4">
-            <button
+            <Button
               onClick={handleResetDefaults}
-              className="flex w-full items-center justify-center space-x-2 rounded-[var(--lofi-button-radius)] bg-[var(--lofi-button-bg)] py-2 text-[var(--lofi-button-text)] shadow-[var(--lofi-card-shadow)] transition-colors hover:bg-[var(--lofi-button-hover)]"
+              className="flex w-full items-center justify-center space-x-2"
             >
               <RotateCcw size={16} />
               <span>Restore Defaults</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>

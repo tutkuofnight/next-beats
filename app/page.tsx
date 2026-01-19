@@ -13,6 +13,8 @@ import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Channel, CustomSoundEffect } from '@/types/lofi'
 import SettingsModal from '@/components/SettingsModal'
 import styles from '@/styles/Lofi.module.css'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
@@ -331,7 +333,7 @@ const EnhancedLofiPlayer = () => {
       <div className="flex min-h-screen w-full items-start justify-center bg-[var(--lofi-background)] p-4 transition-colors duration-500 sm:items-center sm:p-8">
         <div className="w-full max-w-4xl space-y-8 py-4">
           {/* Retro TV */}
-          <div className="shadow-[var(--lofi-accent)]/30 relative aspect-video overflow-hidden rounded-2xl border-4 border-[var(--lofi-border)] bg-black shadow-md transition-all duration-500">
+          <div className="shadow-[var(--lofi-accent)]/30 rounded-[var(--lofi-button-radius)] relative aspect-video overflow-hidden border-4 border-[var(--lofi-border)] bg-black shadow-md transition-all duration-500">
             <div className="absolute inset-0">
               {mounted && <StaticEffect />}
               {mounted && (
@@ -375,17 +377,18 @@ const EnhancedLofiPlayer = () => {
           </div>
 
           {/* Main Controls Section */}
-          <div className="space-y-6 rounded-xl bg-[var(--lofi-card)] p-4 transition-colors duration-500 sm:p-6">
+          <div className="space-y-6 rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card)] p-4 transition-colors duration-500 sm:p-6">
             {/* Channel Information */}
             <div className="relative space-y-1 px-2 font-mono text-[var(--lofi-text-primary)]">
               {/* Settings button */}
               <div className="absolute top-0 right-0 flex justify-center">
-                <button
+                <Button
                   onClick={() => setIsSettingsOpen(true)}
-                  className="rounded-full bg-[var(--lofi-button-bg)] p-2 text-[var(--lofi-button-text)] transition-colors hover:bg-[var(--lofi-button-hover)]"
+                  size="icon"
+                  className="rounded-full"
                 >
                   <Settings size={18} />
-                </button>
+                </Button>
               </div>
               {mounted ? (
                 <>
@@ -428,7 +431,7 @@ const EnhancedLofiPlayer = () => {
 
             {/* Controls Container */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
+              <div className="grid grid-rows-2 grid-cols-1 xs:flex items-center justify-between gap-3 w-full">
                 {/* Left Side - Playback Controls */}
                 {mounted && (
                   <PlaybackControls
@@ -442,7 +445,7 @@ const EnhancedLofiPlayer = () => {
 
                 {/* Right Side - Channel Management */}
                 {mounted && (
-                  <div className="flex shrink-0 items-center">
+                  <div className="flex shrink-0 items-center justify-self-end">
                     <ChannelManagement
                       isAddingChannel={isAddingChannel}
                       setIsAddingChannel={setIsAddingChannel}
@@ -459,10 +462,11 @@ const EnhancedLofiPlayer = () => {
               </div>
 
               {/* Progress Bar */}
-              <div className="">
-                <div className="h-1 w-full overflow-hidden rounded-full bg-[var(--lofi-card-hover)]">
+              <div>
+                <div className="relative h-1 w-full overflow-hidden rounded-full">
+                  <div className="absolute inset-0 bg-[var(--lofi-accent)] opacity-20" />
                   <div
-                    className="h-full bg-[var(--lofi-accent)] transition-all duration-300"
+                    className="relative h-full bg-[var(--lofi-accent)] transition-all duration-300"
                     style={{ width: `${played * 100}%` }}
                   />
                 </div>
@@ -472,7 +476,7 @@ const EnhancedLofiPlayer = () => {
 
           {/* Sound Effects Section - Separated into its own card */}
           {mounted && (
-            <div className="rounded-xl bg-[var(--lofi-card)] p-4 transition-colors duration-500 sm:p-6">
+            <div className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card)] p-4 transition-colors duration-500 sm:p-6">
               <SoundEffectsControls
                 activeEffects={activeEffects}
                 toggleEffect={toggleEffect}
@@ -501,8 +505,7 @@ const EnhancedLofiPlayer = () => {
                 Edit Channel {isEditingChannel + 1}
               </h3>
               <div className="space-y-3">
-                <input
-                  type="text"
+                <Input
                   placeholder="Channel Name"
                   value={editingChannel.name}
                   onChange={(e) =>
@@ -511,10 +514,8 @@ const EnhancedLofiPlayer = () => {
                       name: e.target.value,
                     })
                   }
-                  className={`w-full rounded-lg bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]`}
                 />
-                <input
-                  type="text"
+                <Input
                   placeholder="YouTube URL"
                   value={editingChannel.url}
                   onChange={(e) =>
@@ -523,10 +524,8 @@ const EnhancedLofiPlayer = () => {
                       url: e.target.value,
                     })
                   }
-                  className={`w-full rounded-lg bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]`}
                 />
-                <input
-                  type="text"
+                <Input
                   placeholder="Description"
                   value={editingChannel.description}
                   onChange={(e) =>
@@ -535,10 +534,8 @@ const EnhancedLofiPlayer = () => {
                       description: e.target.value,
                     })
                   }
-                  className={`w-full rounded-lg bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]`}
                 />
-                <input
-                  type="text"
+                <Input
                   placeholder="Creator"
                   value={editingChannel.creator}
                   onChange={(e) =>
@@ -547,22 +544,23 @@ const EnhancedLofiPlayer = () => {
                       creator: e.target.value,
                     })
                   }
-                  className={`w-full rounded-lg bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]`}
                 />
                 <div className="flex justify-end space-x-2">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setIsEditingChannel(null)}
-                    className={`rounded-full px-3 py-1 text-xs text-[var(--lofi-text-primary)] hover:text-[var(--lofi-text-secondary)]`}
                   >
                     Cancel
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={handleSaveEditedChannel}
-                    className="flex items-center space-x-2 rounded-full bg-[var(--lofi-button-bg)] px-3 py-1 text-xs text-[var(--lofi-button-text)] hover:bg-[var(--lofi-button-hover)]"
+                    size="sm"
+                    className="flex items-center space-x-2"
                   >
                     <Save size={14} />
                     <span>Save Changes</span>
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -594,24 +592,22 @@ const EnhancedLofiPlayer = () => {
                 </p>
               )}
               <div className="flex justify-end space-x-2">
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setShowDeleteConfirm(null)}
-                  className={`rounded-full px-3 py-1 text-xs text-[var(--lofi-text-primary)] hover:text-[var(--lofi-text-secondary)]`}
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => handleDeleteChannel(showDeleteConfirm)}
-                  className={`flex items-center space-x-2 rounded-full ${
-                    allChannels.length <= 1
-                      ? 'cursor-not-allowed bg-[var(--lofi-button-bg)]'
-                      : 'bg-[var(--lofi-button-bg)] hover:bg-[var(--lofi-button-hover)]'
-                  } px-3 py-1 text-xs text-[var(--lofi-button-text)]`}
                   disabled={allChannels.length <= 1}
+                  size="sm"
+                  className="flex items-center space-x-2"
                 >
                   <X size={14} />
                   <span>Delete Channel</span>
-                </button>
+                </Button>
               </div>
             </div>
           </div>

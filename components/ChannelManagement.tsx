@@ -1,6 +1,8 @@
 import React from 'react'
 import { Edit2, X, Plus, Save } from 'lucide-react'
 import { Channel } from '@/types/lofi'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 interface ChannelManagementProps {
   isAddingChannel: boolean
@@ -34,24 +36,27 @@ const ChannelManagement: React.FC<ChannelManagementProps> = ({
   >
     {!isAddingChannel ? (
       <div className="flex items-center space-x-2">
-        <button
+        <Button
           onClick={() => handleEditChannel(currentChannel)}
-          className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-button-bg)] p-2 text-[var(--lofi-button-text)] shadow-[var(--lofi-card-shadow)] transition-colors hover:bg-[var(--lofi-button-hover)]"
+          size="icon"
+          variant="default"
         >
           <Edit2 size={16} />
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setShowDeleteConfirm(currentChannel)}
-          className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-button-bg)] p-2 text-[var(--lofi-button-text)] shadow-[var(--lofi-card-shadow)] transition-colors hover:bg-[var(--lofi-button-hover)]"
+          size="icon"
+          variant="default"
         >
           <X size={16} />
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setIsAddingChannel(true)}
-          className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-button-bg)] p-2 text-[var(--lofi-button-text)] shadow-[var(--lofi-card-shadow)] transition-colors hover:bg-[var(--lofi-button-hover)]"
+          size="icon"
+          variant="default"
         >
           <Plus size={16} />
-        </button>
+        </Button>
       </div>
     ) : (
       <div className="w-full max-w-md space-y-3 rounded-[var(--lofi-card-radius)] bg-[var(--lofi-card)] p-6 shadow-[var(--lofi-card-shadow)]">
@@ -59,57 +64,51 @@ const ChannelManagement: React.FC<ChannelManagementProps> = ({
           Add New Channel
         </h3>
         <div className="grid grid-cols-1 gap-3">
-          <input
-            type="text"
+          <Input
             placeholder="Channel Name"
             value={newChannel.name}
             onChange={(e) =>
               setNewChannel({ ...newChannel, name: e.target.value })
             }
-            className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]"
           />
-          <input
-            type="text"
+          <Input
             placeholder="YouTube URL"
             value={newChannel.url}
             onChange={(e) =>
               setNewChannel({ ...newChannel, url: e.target.value })
             }
-            className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]"
           />
-          <input
-            type="text"
+          <Input
             placeholder="Description"
             value={newChannel.description}
             onChange={(e) =>
               setNewChannel({ ...newChannel, description: e.target.value })
             }
-            className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]"
           />
-          <input
-            type="text"
+          <Input
             placeholder="Creator"
             value={newChannel.creator}
             onChange={(e) =>
               setNewChannel({ ...newChannel, creator: e.target.value })
             }
-            className="rounded-[var(--lofi-button-radius)] bg-[var(--lofi-card-hover)] px-3 py-2 text-sm text-[var(--lofi-text-primary)] placeholder:text-[var(--lofi-text-secondary)]"
           />
         </div>
         <div className="flex justify-end space-x-2">
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setIsAddingChannel(false)}
-            className="rounded-[var(--lofi-button-radius)] px-3 py-1 text-xs text-[var(--lofi-text-secondary)] hover:text-[var(--lofi-text-primary)]"
+            size="sm"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={saveChannel}
-            className="flex items-center space-x-2 rounded-[var(--lofi-button-radius)] bg-[var(--lofi-accent)] px-3 py-1 text-xs text-white shadow-[var(--lofi-card-shadow)] hover:bg-[var(--lofi-accent-hover)]"
+            variant="accent"
+            size="sm"
           >
             <Save size={14} />
             <span>Save Channel</span>
-          </button>
+          </Button>
         </div>
       </div>
     )}
