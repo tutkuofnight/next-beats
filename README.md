@@ -1,10 +1,10 @@
-# <img src="public/icon.svg" alt="NextBeats Icon" width="28" height="28" style="vertical-align: middle;"> NextBeats
+# <img src="public/icon.svg" alt="NextBeats Icon" width="28" height="28" style="vertical-align: middle;"> LofiBeatz
 
 A modern, customizable lofi music player built with Next.js and TypeScript. Perfect for coding, studying, or just chilling.
-Try it out: [demo](https://nextbeats.vercel.app/).
+Try it out: [demo](https://lofi-beatz.vercel.app/).
 
 <p align="center">
-  <img src="demo.gif" alt="NextBeats Demo" width="800px" />
+  <img src="demo.gif" alt="LofiBeatz Demo" width="800px" />
 </p>
 
 ## ✨ Features
@@ -22,7 +22,7 @@ Try it out: [demo](https://nextbeats.vercel.app/).
 
 ### Adding Your Own Channels
 
-Make NextBeats truly yours by adding your favorite lofi streams:
+Make LofiBeatz truly yours by adding your favorite lofi streams:
 
 1. Click the '+' button in the channel list
 2. Paste any YouTube lofi stream URL
@@ -67,8 +67,8 @@ Each effect has its own volume control, so you can mix them perfectly with your 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/btahir/next-beats.git
-cd next-beats
+git clone https://github.com/tutkuofnight/lofi-beatz.git
+cd lofi-beatz
 ```
 
 2. Install dependencies:
@@ -99,14 +99,14 @@ bun dev
 
 ### 🐳 Using Docker
 
-You can also run NextBeats using Docker:
+You can also run LofiBeatz using Docker:
 
 ```bash
 # Build the Docker image
-docker build -t next-beats .
+docker build -t lofi-beatz .
 
 # Run the container
-docker run -p 3000:3000 next-beats
+docker run -p 3000:3000 lofi-beatz
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to start vibing! 🎧
